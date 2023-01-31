@@ -1,85 +1,88 @@
-import { async } from "rxjs";
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, UpdateDateColumn } from "typeorm";
-import { PrimaryGeneratedColumn } from "typeorm"; 
+import {BeforeInsert, Column, CreateDateColumn, DeleteDateColumn, Entity, 
+                        ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { CategoryEntity } from "./category.entity";
 
-@Entity('productos',{schema: 'ventas'} )
+@Entity('products',{schema: 'ventas'} )
 export class ProductEntity{
+
     @PrimaryGeneratedColumn('sv')
     id:number;
+    
     @CreateDateColumn({
-        name: 'created_date',
-        type: 'timestamptz',
-        default:() => 'CURRENT_TIMESTAMP',
+       name:'create_date',
+       type: 'timestamptz',
+       default:()=>'CURRENT_TIMESTAMP',
     })
-    createdAt: Date; 
+    createdAt: Date;
 
     @UpdateDateColumn({
-        name: 'create_date',
-        type: 'timestamptz',
-        nullable: true,
-        default:() => 'CURRENT_TIMESTAMP',
+        name:'create_date',
+        type:'timestamptz',
+        default:()=>'CURRENT_TIMESTAMP',
     })
     updateAt: Date;
 
     @DeleteDateColumn({
-        name: 'create_date',
-        type: 'timestamptz',
+        name:'create_date',
+        type:'timestamptz',
         nullable: true,
     })
     deleteAt: Date;
 
-//relationships
-@ManyToOne(()=> CategoryEntity, (category) => category.products)
-Category: CategoryEntity;
+    //Relationship
+    @ManyToOne(()=>CategoryEntity,(category)=>category.products)
+    category:CategoryEntity;
 
     @Column('varchar',{
-        name: 'title',
-        unique: true,
-        Comment: 'titulo del proyecto',
-})
-title:string;
+        name:'title',
+        unique:true,
+        comment:'titulo del producto',
+    })
+    title:string;
 
     @Column('number',{
-        name: 'price',
-        Comment: 'precio del producto'
-})
-price: number;
+        name:'price',
+        comment:'precio con dos decimales',
+    })
+    price:number;
 
     @Column('varchar',{
-        name: 'description',
-        unique: true,
-        Comment: 'precio del producto',
-})
+        name:'description',
+        nullable:true,
+        comment:'descripcion del producto'
+    })
+    description:string;
 
-description: string;
-/*@Column('boolean',{
-    name: 'estate',
-})
-state:boolean:
-@Column('enum',{
-    name: 'language',
-    enum: languageTypeEnum;
-//completar
-@BeforeInsert () //validacion antes de insertar o actualizar en nuestra base 
-@BeforeUpdate()
-async setTitle(){
-    if(!this.tittle){
+    //complement
+    //@Column('boolean',{
+      //  name:'state',   
+    //})
+    //state:boolean;
+    //@column('enum',{
+      //  name:'langauje',
+        //enum:languajeTypeEnum,
+    //})
+    //languaje:LanguajeTypeEnum;
+
+
+    //complemento
+    @BeforeInsert()
+    @Beforeupdate()
+    async setTitle(){
+        if(!this.title){
         return;
     }
-    this.tittle = this.tittle.toUpperCase();
-}
-setEmail(){
-    isFinite(!this.email){
-        return;
+    this.title =this.title.toUpperCase();
     }
-    this.email = this.email.toLowerCase().trim(); //para que no haya espacios
-
-    async hashPassword(){
-        if(!this.password){
-            return;
-        }
-        this.password = Bcrypt.hash(this.password, 12))
-    }
-}*/
-
+        //setEmail(){
+        //  if(!this.email){
+        //return;
+        //}
+        //       this.email = this.email.toLowerCase().trim();
+         //}
+        //  Async hashPassword(){
+        //    if(!this.password){
+        //          return;
+        //    }
+        //  this.password = await Bcrypt.hash(this.password, 12);
 }
